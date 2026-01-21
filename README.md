@@ -1,4 +1,4 @@
-# Sistem Pendaftaran Pasien Online - YARSI Sumbar
+# Sistem Pendaftaran Pasien Online
 Prototipe sistem pendaftaran pasien berbasis web menggunakan HTML, CSS, dan JavaScript.
 
 ### 1. Tampilan Antarmuka (UI)
