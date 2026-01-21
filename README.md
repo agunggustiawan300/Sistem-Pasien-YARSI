@@ -2,14 +2,13 @@
 Prototipe sistem pendaftaran pasien berbasis web menggunakan HTML, CSS, dan JavaScript.
 
 ### 1. Tampilan Antarmuka (UI)
-![Tampilan Utama](tampilan-utama.png)
+![Tampilan Utama](assets/tampilan-utama.png)
 
 ### 2. Fitur Input & Manajemen Data
-![Bukti Input](bukti-input-data.png)
+![Bukti Input](assets/bukti-input-data.png)
 
 ### 3. Sistem Validasi Keamanan Data
-![Validasi](validasi-sistem.png)
-
+![Validasi](assets/validasi-sistem.png)
 ---
 **Teknologi yang Digunakan:**
 * HTML5 & Bootstrap 5 (Struktur & Layout)
