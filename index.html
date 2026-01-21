@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Sistem Pasien YARSI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-light">
+
+<div class="container mt-4 mt-md-5">
+  <h2 class="mb-2">YARSI SUMATERA BARAT</h2>
+  <h5 class="text-muted mb-4">Sistem Pendaftaran Pasien Online</h5>
+
+  <form id="formPasien">
+    <div class="mb-3">
+      <label class="form-label fw-bold">Nama Pasien</label>
+      <input type="text" class="form-control" id="nama" placeholder="Masukkan nama lengkap">
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label fw-bold">Umur</label>
+        <input type="number" class="form-control" id="umur" placeholder="Contoh: 25">
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label fw-bold">Jenis Kelamin</label>
+        <select class="form-select" id="jk">
+          <option value="">-- Pilih --</option>
+          <option value="Laki-laki">Laki-laki</option>
+          <option value="Perempuan">Perempuan</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label fw-bold">Poliklinik Tujuan</label>
+      <select class="form-select" id="poli">
+        <option value="">-- Pilih Poli --</option>
+        <option value="Umum">Umum</option>
+        <option value="Gigi">Gigi</option>
+        <option value="Anak">Anak</option>
+        <option value="Syaraf">Syaraf</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100 py-2 shadow-sm">Daftar Sekarang</button>
+  </form>
+
+  <hr class="my-5">
+
+  <h5 class="text-start mb-3">Data Pasien Terdaftar</h5>
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Nama</th>
+          <th>Umur</th>
+          <th>JK</th>
+          <th>Poli</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="dataPasien"></tbody>
+    </table>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
