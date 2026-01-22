@@ -1,16 +1,25 @@
-# Sistem Pendaftaran Pasien Online
-Prototipe sistem pendaftaran pasien berbasis web menggunakan HTML, CSS, dan JavaScript.
+# 🏥 Sistem Antrean Real-time - RS YARSI SUMBAR
 
-### 1. Tampilan Antarmuka (UI)
-![Tampilan Utama](assets/tampilan-utama.png)
+Sistem manajemen antrean pasien berbasis web yang terintegrasi secara real-time menggunakan **Firebase Realtime Database**. Sistem ini dirancang untuk memudahkan proses pendaftaran, pemanggilan pasien di poli, dan penampilan nomor antrean di ruang tunggu.
 
-### 2. Fitur Input & Manajemen Data
-![Bukti Input](assets/bukti-input-data.png)
+## 🔗 Link Akses Cepat
+Silakan klik link di bawah ini untuk mengakses sistem:
 
-### 3. Sistem Validasi Keamanan Data
-![Validasi](assets/validasi-sistem.png)
+* **[📲 Halaman Pendaftaran](https://agunggustiawan300.github.io/Sistem-Pasien-YARSI/index.html)** - (Untuk Pasien/Petugas Front Office)
+* **[👨‍⚕️ Panel Admin Poli](https://agunggustiawan300.github.io/Sistem-Pasien-YARSI/admin.html)** - (Untuk Perawat/Dokter memanggil pasien - Password: `yarsi123`)
+* **[📺 Monitor TV Antrean](https://agunggustiawan300.github.io/Sistem-Pasien-YARSI/display.html)** - (Ditampilkan di Smart TV atau Monitor Ruang Tunggu)
+
+## 🚀 Fitur Utama
+- **Real-time Sync:** Nomor antrean otomatis update di semua perangkat tanpa refresh.
+- **Voice Call (TTS):** Panggilan suara robot otomatis menyebutkan nomor dan nama pasien 2x.
+- **Auto-Next:** Fitur di panel admin untuk memanggil urutan berikutnya dengan satu klik.
+- **Responsive Design:** Bisa dibuka lancar di HP, Tablet, Laptop, maupun Smart TV.
+- **Security:** Panel admin dilindungi password.
+
+## 🛠️ Teknologi yang Digunakan
+- **Frontend:** HTML5, CSS3 (Bootstrap), JavaScript (ES6).
+- **Backend/Database:** Firebase Realtime Database.
+- **Hosting:** GitHub Pages.
+
 ---
-**Teknologi yang Digunakan:**
-* HTML5 & Bootstrap 5 (Struktur & Layout)
-* JavaScript ES6 (Logika & Validasi)
-* CSS3 (Styling Custom)
+*Dibuat oleh [Agung Gustiawan](https://github.com/agunggustiawan300)*
