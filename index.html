@@ -1,76 +1,266 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Sistem Pasien YARSI</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>Pendaftaran RS YARSI - Sistem Antrean</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { 
+            background-color: #f0f2f5; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        }
+        .header-yarsi { 
+            background: linear-gradient(135deg, #0d6efd 0%, #004085 100%); 
+            color: white; 
+            padding: 40px; 
+            border-radius: 0 0 40px 40px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
+            margin-bottom: 30px;
+        }
+        .card-stat { 
+            border: none; 
+            border-radius: 18px; 
+            transition: all 0.3s ease; 
+            box-shadow: 0 6px 12px rgba(0,0,0,0.08); 
+        }
+        .card-stat:hover { 
+            transform: translateY(-8px); 
+        }
+        .form-section { 
+            background: white; 
+            border-radius: 25px; 
+            padding: 35px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
+            border-top: 6px solid #0d6efd; 
+        }
+        .table-responsive {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+        .badge-status {
+            padding: 8px 15px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+    </style>
 </head>
-<body class="bg-light">
+<body>
 
-<div class="container mt-4 mt-md-5">
-  <h2 class="mb-2">YARSI SUMATERA BARAT</h2>
-  <h5 class="text-muted mb-4">Sistem Pendaftaran Pasien Online</h5>
+<div class="header-yarsi text-center">
+    <h1 class="fw-bold">RS YARSI SUMATERA BARAT</h1>
+    <p class="mb-0 fs-5 opacity-75">Sistem Pendaftaran Pasien & Antrean Real-Time</p>
+</div>
 
-  <form id="formPasien">
-    <div class="mb-3">
-      <label class="form-label fw-bold">Nama Pasien</label>
-      <input type="text" class="form-control" id="nama" placeholder="Masukkan nama lengkap">
+<div class="container">
+    <div class="row g-4 text-center mb-5">
+        <div class="col-md-4">
+            <div class="card card-stat bg-dark text-white p-4">
+                <p class="text-uppercase mb-1 fw-bold opacity-75">Total Pasien</p>
+                <h2 id="statTotal" class="display-5 fw-bold">0</h2>
+            </div>
+        </div>
+        <div class="col-md-2 col-6">
+            <div class="card card-stat bg-primary text-white p-3">
+                <p class="text-uppercase mb-1 small fw-bold">Poli Umum</p>
+                <h3 id="statUmum" class="fw-bold">0</h3>
+            </div>
+        </div>
+        <div class="col-md-2 col-6">
+            <div class="card card-stat bg-success text-white p-3">
+                <p class="text-uppercase mb-1 small fw-bold">Poli Gigi</p>
+                <h3 id="statGigi" class="fw-bold">0</h3>
+            </div>
+        </div>
+        <div class="col-md-2 col-6">
+            <div class="card card-stat bg-warning text-dark p-3">
+                <p class="text-uppercase mb-1 small fw-bold">Poli Anak</p>
+                <h3 id="statAnak" class="fw-bold">0</h3>
+            </div>
+        </div>
+        <div class="col-md-2 col-6">
+            <div class="card card-stat bg-danger text-white p-3">
+                <p class="text-uppercase mb-1 small fw-bold">Poli Syaraf</p>
+                <h3 id="statSyaraf" class="fw-bold">0</h3>
+            </div>
+        </div>
     </div>
 
-    <div class="row">
-      <div class="col-md-6 mb-3">
-        <label class="form-label fw-bold">Umur</label>
-        <input type="number" class="form-control" id="umur" placeholder="Contoh: 25">
-      </div>
-      <div class="col-md-6 mb-3">
-        <label class="form-label fw-bold">Jenis Kelamin</label>
-        <select class="form-select" id="jk">
-          <option value="">-- Pilih --</option>
-          <option value="Laki-laki">Laki-laki</option>
-          <option value="Perempuan">Perempuan</option>
-        </select>
-      </div>
+    <div class="form-section mb-5">
+        <h4 class="fw-bold text-primary mb-4 border-bottom pb-3">Formulir Pendaftaran Antrean</h4>
+        <form id="formPasien">
+            <div class="mb-4">
+                <label class="form-label fw-bold">Nama Lengkap Pasien</label>
+                <input type="text" id="nama" class="form-control form-control-lg border-2 shadow-sm" placeholder="Masukkan nama sesuai KTP" required>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Umur Pasien (Tahun)</label>
+                    <input type="number" id="umur" class="form-control form-control-lg border-2 shadow-sm" placeholder="Contoh: 25" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Jenis Kelamin</label>
+                    <select class="form-select form-select-lg border-2 shadow-sm" id="jk">
+                        <option value="Laki-laki">Laki-laki</option>
+                        <option value="Perempuan">Perempuan</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label fw-bold">Pilih Poli Tujuan</label>
+                <select class="form-select form-select-lg border-2 shadow-sm" id="poli" required>
+                    <option value="" disabled selected>-- Pilih Salah Satu --</option>
+                    <option value="Umum">Poli Umum</option>
+                    <option value="Gigi">Poli Gigi</option>
+                    <option value="Anak">Poli Anak</option>
+                    <option value="Syaraf">Poli Syaraf</option>
+                </select>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary btn-lg py-3 fw-bold shadow text-uppercase" style="letter-spacing: 2px;">Ambil Nomor Antrean Sekarang</button>
+            </div>
+        </form>
     </div>
 
-    <div class="mb-3">
-      <label class="form-label fw-bold">Poliklinik Tujuan</label>
-      <select class="form-select" id="poli">
-        <option value="">-- Pilih Poli --</option>
-        <option value="Umum">Umum</option>
-        <option value="Gigi">Gigi</option>
-        <option value="Anak">Anak</option>
-        <option value="Syaraf">Syaraf</option>
-      </select>
+    <div class="mb-5">
+        <h5 class="fw-bold mb-3 text-dark"><i class="bi bi-person-lines-fill"></i> Daftar Antrean Pasien Hari Ini</h5>
+        <div class="table-responsive bg-white">
+            <table class="table table-hover align-middle text-center mb-0">
+                <thead class="table-dark">
+                    <tr style="height: 60px;">
+                        <th>NOMOR ANTREAN</th>
+                        <th class="text-start ps-4">NAMA PASIEN</th>
+                        <th>POLI TUJUAN</th>
+                        <th>JAM DAFTAR</th>
+                        <th>STATUS ANTRIAN</th>
+                    </tr>
+                </thead>
+                <tbody id="dataPasien" class="fw-bold">
+                    </tbody>
+            </table>
+        </div>
     </div>
-
-    <button type="submit" class="btn btn-primary w-100 py-2 shadow-sm">Daftar Sekarang</button>
-  </form>
-
-  <hr class="my-5">
-
-  <h5 class="text-start mb-3">Data Pasien Terdaftar</h5>
-  <div class="table-responsive">
-    <table class="table table-hover align-middle">
-      <thead>
-        <tr>
-          <th>No</th>
-          <th>Nama</th>
-          <th>Umur</th>
-          <th>JK</th>
-          <th>Poli</th>
-          <th>Aksi</th>
-        </tr>
-      </thead>
-      <tbody id="dataPasien"></tbody>
-    </table>
-  </div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-<script src="script.js"></script>
+<script>
+    // FIREBASE CONFIGURATION
+    const firebaseConfig = {
+        apiKey: "AIzaSy...", 
+        authDomain: "sistem-pasien-yarsi.firebaseapp.com",
+        databaseURL: "https://sistem-pasien-yarsi-default-rtdb.asia-southeast1.firebasedatabase.app/",
+        projectId: "sistem-pasien-yarsi",
+        storageBucket: "sistem-pasien-yarsi.appspot.com",
+        messagingSenderId: "...",
+        appId: "..."
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const hariIni = new Date().toLocaleDateString('en-CA');
 
+    // MENGAMBIL DAN MENAMPILKAN DATA SECARA REAL-TIME
+    db.ref('pasien').on('value', function(snapshot) {
+        const tbody = document.getElementById("dataPasien");
+        tbody.innerHTML = "";
+        
+        let total = 0;
+        let umum = 0;
+        let gigi = 0;
+        let anak = 0;
+        let syaraf = 0;
+
+        snapshot.forEach(function(childSnapshot) {
+            const p = childSnapshot.val();
+            
+            if(p.tanggal === hariIni) {
+                // Hitung Statistik
+                total++;
+                if(p.poli === 'Umum') umum++;
+                if(p.poli === 'Gigi') gigi++;
+                if(p.poli === 'Anak') anak++;
+                if(p.poli === 'Syaraf') syaraf++;
+
+                // Tentukan Warna Badge
+                let warnaBadge = "bg-info text-dark";
+                if(p.status === 'Dipanggil') {
+                    warnaBadge = "bg-warning text-dark";
+                } else if(p.status === 'Selesai') {
+                    warnaBadge = "bg-secondary text-white";
+                }
+
+                // Render Baris Tabel
+                const baris = `
+                    <tr style="height: 70px; border-bottom: 1px solid #eee;">
+                        <td class="fs-4 text-primary">${p.noAntrean}</td>
+                        <td class="text-start ps-4">${p.nama}</td>
+                        <td><span class="badge bg-light text-dark border px-3 py-2">${p.poli}</span></td>
+                        <td class="text-muted small">${p.waktu}</td>
+                        <td><span class="badge-status ${warnaBadge}">${p.status}</span></td>
+                    </tr>
+                `;
+                tbody.innerHTML += baris;
+            }
+        });
+
+        // Update Tampilan Statistik
+        document.getElementById("statTotal").innerText = total;
+        document.getElementById("statUmum").innerText = umum;
+        document.getElementById("statGigi").innerText = gigi;
+        document.getElementById("statAnak").innerText = anak;
+        document.getElementById("statSyaraf").innerText = syaraf;
+    });
+
+    // PROSES SIMPAN PENDAFTARAN
+    document.getElementById("formPasien").onsubmit = function(event) {
+        event.preventDefault();
+
+        const namaPasien = document.getElementById("nama").value;
+        const poliTujuan = document.getElementById("poli").value;
+        const umurPasien = document.getElementById("umur").value;
+        const jkPasien = document.getElementById("jk").value;
+
+        db.ref('pasien').once('value', function(snap) {
+            let hitungAntreanPoli = 0;
+            
+            snap.forEach(function(c) {
+                if(c.val().poli === poliTujuan && c.val().tanggal === hariIni) {
+                    hitungAntreanPoli++;
+                }
+            });
+
+            // Format Nomor: U-01, G-01, dsb
+            const kodePoli = poliTujuan.charAt(0).toUpperCase();
+            const urutan = (hitungAntreanPoli + 1).toString().padStart(2, '0');
+            const nomorFinal = kodePoli + "-" + urutan;
+            
+            const jamSekarang = new Date().toLocaleTimeString('id-ID', {
+                hour: '2-digit', 
+                minute: '2-digit'
+            }).replace(/\./g, ':');
+
+            // Simpan ke Firebase
+            db.ref('pasien').push({
+                nama: namaPasien,
+                poli: poliTujuan,
+                noAntrean: nomorFinal,
+                waktu: jamSekarang,
+                tanggal: hariIni,
+                umur: umurPasien,
+                jk: jkPasien,
+                status: "Menunggu"
+            }).then(function() {
+                alert("PENDAFTARAN BERHASIL!\n\nNama: " + namaPasien + "\nNomor Antrean: " + nomorFinal);
+                document.getElementById("formPasien").reset();
+            }).catch(function(error) {
+                alert("Gagal menyimpan data: " + error);
+            });
+        });
+    };
+</script>
 </body>
 </html>

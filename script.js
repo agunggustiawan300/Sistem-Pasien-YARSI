@@ -1,72 +1,94 @@
-// Konfigurasi Firebase Agung
+// GANTI CONFIG DENGAN MILIKMU SENDIRI
 const firebaseConfig = {
-  apiKey: "AIzaSyC-Es6rDXxkcsg510c9RUO67t1U3durbNg",
-  authDomain: "sistem-pasien-yarsi.firebaseapp.com",
-  databaseURL: "https://sistem-pasien-yarsi-default-rtdb.asia-southeast1.firebasedatabase.app/",
-  projectId: "sistem-pasien-yarsi",
-  storageBucket: "sistem-pasien-yarsi.firebasestorage.app",
-  messagingSenderId: "624798663279",
-  appId: "1:624798663279:web:47d0b7e5ece51180fb039a",
-  measurementId: "G-K3WY03T1PT"
+    apiKey: "AIzaSy...", 
+    authDomain: "sistem-pasien-yarsi.firebaseapp.com",
+    databaseURL: "https://sistem-pasien-yarsi-default-rtdb.asia-southeast1.firebasedatabase.app/",
+    projectId: "sistem-pasien-yarsi",
+    storageBucket: "sistem-pasien-yarsi.appspot.com",
+    messagingSenderId: "...",
+    appId: "..."
 };
 
-// Hubungkan ke Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// Fungsi Daftar Pasien
-document.getElementById("formPasien").addEventListener("submit", function(e) {
-    e.preventDefault();
-
-    const nama = document.getElementById("nama").value.trim();
-    const umur = document.getElementById("umur").value;
-    const jk = document.getElementById("jk").value;
-    const poli = document.getElementById("poli").value;
-
-    if (nama && umur && jk && poli) {
-        // Simpan data ke Cloud
-        db.ref('pasien').push({
-            nama: nama,
-            umur: umur,
-            jk: jk,
-            poli: poli,
-            waktu: Date.now()
-        }).then(() => {
-            alert("Pendaftaran Berhasil Tersimpan di Cloud!");
-            this.reset();
-        });
-    } else {
-        alert("Semua data wajib diisi!");
-    }
-});
-
-// Ambil data secara otomatis (Real-time)
-db.ref('pasien').on('value', (snapshot) => {
-    const tabel = document.getElementById("dataPasien");
-    tabel.innerHTML = "";
-    let nomor = 1;
-
-    snapshot.forEach((childSnapshot) => {
-        const p = childSnapshot.val();
-        const key = childSnapshot.key;
+// Fungsi Render Tabel Pasien
+function updateTabel(dataArray) {
+    const tbody = document.getElementById("dataPasien");
+    if(!tbody) return;
+    tbody.innerHTML = "";
+    
+    dataArray.forEach((p) => {
+        const warnaPoli = p.poli === 'Umum' ? 'bg-primary' : p.poli === 'Gigi' ? 'bg-success' : p.poli === 'Anak' ? 'bg-warning text-dark' : 'bg-danger';
+        const warnaStatus = p.status === 'Selesai' ? 'bg-secondary' : p.status === 'Dipanggil' ? 'bg-warning text-dark' : 'bg-info text-dark';
         
-        tabel.innerHTML += `
+        tbody.innerHTML += `
             <tr>
-                <td>${nomor++}</td>
-                <td class="fw-bold">${p.nama}</td>
-                <td>${p.umur} Thn</td>
-                <td>${p.jk}</td>
-                <td><span class="badge bg-info text-dark">${p.poli}</span></td>
-                <td>
-                    <button class="btn btn-danger btn-sm" onclick="hapusPasien('${key}')">Hapus</button>
-                </td>
+                <td class="fw-bold fs-5">${p.noAntrean}</td>
+                <td class="text-start ps-4 fw-bold text-uppercase">${p.nama}</td>
+                <td><span class="badge ${warnaPoli}">${p.poli}</span></td>
+                <td>${p.waktu}</td>
+                <td><span class="badge ${warnaStatus}">${p.status}</span></td>
             </tr>`;
     });
+}
+
+// Pantau Perubahan Data (Statistik & Tabel)
+db.ref('pasien').on('value', (snapshot) => {
+    const listHariIni = [];
+    const tgl = new Date().toLocaleDateString('en-CA');
+    let t=0, u=0, g=0, a=0, s=0;
+
+    snapshot.forEach((child) => {
+        const d = child.val();
+        if(d.tanggal === tgl) {
+            listHariIni.push(d);
+            t++;
+            if(d.poli === 'Umum') u++;
+            if(d.poli === 'Gigi') g++;
+            if(d.poli === 'Anak') a++;
+            if(d.poli === 'Syaraf') s++;
+        }
+    });
+
+    // Update Counter di Kartu Atas
+    if(document.getElementById("statTotal")) {
+        document.getElementById("statTotal").innerText = t;
+        document.getElementById("statUmum").innerText = u;
+        document.getElementById("statGigi").innerText = g;
+        document.getElementById("statAnak").innerText = a;
+        document.getElementById("statSyaraf").innerText = s;
+    }
+    updateTabel(listHariIni);
 });
 
-// Fungsi Hapus Data di Cloud
-window.hapusPasien = function(key) {
-    if (confirm("Hapus data pasien ini dari antrean?")) {
-        db.ref('pasien/' + key).remove();
-    }
-};
+// Proses Pendaftaran Form
+const form = document.getElementById("formPasien");
+if(form) {
+    form.onsubmit = function(e) {
+        e.preventDefault();
+        const nama = document.getElementById("nama").value.trim();
+        const poli = document.getElementById("poli").value;
+        const umur = document.getElementById("umur").value;
+        const jk = document.getElementById("jk").value;
+        const tgl = new Date().toLocaleDateString('en-CA');
+
+        db.ref('pasien').once('value', (snapshot) => {
+            let hitungPoli = 0;
+            snapshot.forEach((child) => {
+                if(child.val().poli === poli && child.val().tanggal === tgl) hitungPoli++;
+            });
+
+            const noAntrean = `${poli.charAt(0).toUpperCase()}-${(hitungPoli + 1).toString().padStart(2, '0')}`;
+            const jam = new Date().toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' }).replace(/\./g, ':');
+
+            db.ref('pasien').push({
+                nama, poli, umur, jk, noAntrean, 
+                waktu: jam, tanggal: tgl, status: "Menunggu"
+            }).then(() => {
+                alert("PENDAFTARAN BERHASIL!\n\nNomor Antrean Anda: " + noAntrean);
+                form.reset();
+            });
+        });
+    };
+}
